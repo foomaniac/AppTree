@@ -1,9 +1,0 @@
-C:\Repos\AppTree\AppTree.Domain\bin\Debug\netcoreapp3.1\AppTree.Domain.deps.json
-C:\Repos\AppTree\AppTree.Domain\bin\Debug\netcoreapp3.1\AppTree.Domain.dll
-C:\Repos\AppTree\AppTree.Domain\bin\Debug\netcoreapp3.1\AppTree.Domain.pdb
-C:\Repos\AppTree\AppTree.Domain\obj\Debug\netcoreapp3.1\AppTree.Domain.csprojAssemblyReference.cache
-C:\Repos\AppTree\AppTree.Domain\obj\Debug\netcoreapp3.1\AppTree.Domain.AssemblyInfoInputs.cache
-C:\Repos\AppTree\AppTree.Domain\obj\Debug\netcoreapp3.1\AppTree.Domain.AssemblyInfo.cs
-C:\Repos\AppTree\AppTree.Domain\obj\Debug\netcoreapp3.1\AppTree.Domain.csproj.CoreCompileInputs.cache
-C:\Repos\AppTree\AppTree.Domain\obj\Debug\netcoreapp3.1\AppTree.Domain.dll
-C:\Repos\AppTree\AppTree.Domain\obj\Debug\netcoreapp3.1\AppTree.Domain.pdb
