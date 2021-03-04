@@ -1,0 +1,15 @@
+C:\Repos\AppTree\AppTree.Infrastructure\bin\Debug\netcoreapp3.1\AppTree.Domain.dll
+C:\Repos\AppTree\AppTree.Infrastructure\obj\Debug\netcoreapp3.1\AppTree.Infrastructure.csprojAssemblyReference.cache
+C:\Repos\AppTree\AppTree.Infrastructure\obj\Debug\netcoreapp3.1\AppTree.Infrastructure.AssemblyInfoInputs.cache
+C:\Repos\AppTree\AppTree.Infrastructure\obj\Debug\netcoreapp3.1\AppTree.Infrastructure.AssemblyInfo.cs
+C:\Repos\AppTree\AppTree.Infrastructure\obj\Debug\netcoreapp3.1\AppTree.Infrastructure.csproj.CoreCompileInputs.cache
+C:\Repos\AppTree\AppTree.Infrastructure\bin\Debug\netcoreapp3.1\AppTree.Infrastructure.deps.json
+C:\Repos\AppTree\AppTree.Infrastructure\bin\Debug\netcoreapp3.1\AppTree.Infrastructure.runtimeconfig.json
+C:\Repos\AppTree\AppTree.Infrastructure\bin\Debug\netcoreapp3.1\AppTree.Infrastructure.runtimeconfig.dev.json
+C:\Repos\AppTree\AppTree.Infrastructure\bin\Debug\netcoreapp3.1\AppTree.Infrastructure.dll
+C:\Repos\AppTree\AppTree.Infrastructure\bin\Debug\netcoreapp3.1\AppTree.Infrastructure.pdb
+C:\Repos\AppTree\AppTree.Infrastructure\bin\Debug\netcoreapp3.1\AppTree.Domain.pdb
+C:\Repos\AppTree\AppTree.Infrastructure\obj\Debug\netcoreapp3.1\AppTree.Infrastructure.csproj.CopyComplete
+C:\Repos\AppTree\AppTree.Infrastructure\obj\Debug\netcoreapp3.1\AppTree.Infrastructure.dll
+C:\Repos\AppTree\AppTree.Infrastructure\obj\Debug\netcoreapp3.1\AppTree.Infrastructure.pdb
+C:\Repos\AppTree\AppTree.Infrastructure\obj\Debug\netcoreapp3.1\AppTree.Infrastructure.genruntimeconfig.cache
