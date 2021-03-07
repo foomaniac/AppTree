@@ -1,4 +1,5 @@
-﻿using AppTree.Domain.Models;
+﻿using AppTree.Domain.AggregateModels;
+using AppTree.Domain.AggregateModels.ApplicationAggregate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -32,6 +33,8 @@ namespace AppTree.Infrastructure.Configurations
                 .HasColumnName(nameof(Application.Repository))
                 .HasColumnType("nvarchar(256)")
                 .IsRequired(false);
+
+            builder.HasMany(app => app.Dependencies).WithMany();
         }
     }
 }
