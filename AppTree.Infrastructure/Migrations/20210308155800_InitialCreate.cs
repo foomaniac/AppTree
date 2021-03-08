@@ -18,30 +18,52 @@ namespace AppTree.Infrastructure.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(256)", nullable: false),
                     Summary = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Repository = table.Column<string>(type: "nvarchar(256)", nullable: true),
-                    ApplicationId = table.Column<int>(type: "int", nullable: true)
+                    Repository = table.Column<string>(type: "nvarchar(256)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Application", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Dependency",
+                schema: "dbo",
+                columns: table => new
+                {
+                    ParentApplicationId = table.Column<int>(nullable: false),
+                    ApplicationId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Dependency", x => new { x.ParentApplicationId, x.ApplicationId });
                     table.ForeignKey(
-                        name: "FK_Application_Application_ApplicationId",
+                        name: "FK_Dependency_Application_ApplicationId",
                         column: x => x.ApplicationId,
                         principalSchema: "dbo",
                         principalTable: "Application",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Dependency_Application_ParentApplicationId",
+                        column: x => x.ParentApplicationId,
+                        principalSchema: "dbo",
+                        principalTable: "Application",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Application_ApplicationId",
+                name: "IX_Dependency_ApplicationId",
                 schema: "dbo",
-                table: "Application",
+                table: "Dependency",
                 column: "ApplicationId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Dependency",
+                schema: "dbo");
+
             migrationBuilder.DropTable(
                 name: "Application",
                 schema: "dbo");

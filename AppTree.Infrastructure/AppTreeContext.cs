@@ -12,6 +12,7 @@ namespace AppTree.Infrastructure
 
         public const string DEFAULT_SCHEMA = "dbo";
         public DbSet<Application> Applications { get; set; }
+        public DbSet<Dependency> Dependencies { get; set; }
 
         public AppTreeContext(DbContextOptions<AppTreeContext> options) : base(options)
         {
