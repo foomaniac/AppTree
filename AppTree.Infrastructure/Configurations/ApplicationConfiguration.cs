@@ -34,7 +34,8 @@ namespace AppTree.Infrastructure.Configurations
                 .HasColumnType("nvarchar(256)")
                 .IsRequired(false);
 
-            builder.HasMany(app => app.Dependencies).WithMany();
+            builder.HasMany(app => app.Dependencies).WithOne(app => app.ParentApplication);
+
         }
     }
 }
