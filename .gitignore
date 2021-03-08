@@ -256,3 +256,4 @@ paket-files/
 src/SeeLive.Identity.Api/obj/Debug/netcoreapp3.1/project.razor.json
 src/SeeLive.Identity.Api/obj/Debug/netcoreapp3.1/SeeLive.Identity.Api.assets.cache
 src/SeeLive.Identity.Api/obj/Debug/netcoreapp3.1/SeeLive.Identity.Api.csprojAssemblyReference.cache
+/.vscode
