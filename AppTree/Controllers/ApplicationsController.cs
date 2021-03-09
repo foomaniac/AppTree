@@ -34,6 +34,8 @@ namespace AppTree.Controllers
             }
 
             var application = await _context.Applications
+                .Include(app => app.Dependencies)
+                .ThenInclude(app => app.Application)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (application == null)
             {

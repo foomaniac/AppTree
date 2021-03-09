@@ -35,8 +35,8 @@
     @foreach (var dependency in Model.Dependencies)
     {
         <dl class="row">
-            <dt class="col-sm-2">@Html.DisplayNameFor(dependency => dependency.Name)</dt>
-            <dt class="col-5">@Html.DisplayFor(dependency => dependency.Repository)</dt>
+            <dd class="col-sm-5">@dependency.Application.Name</dd>
+            <dd class="col-sm-5">@dependency.Application.Repository</dd>
         </dl>
     }
 
