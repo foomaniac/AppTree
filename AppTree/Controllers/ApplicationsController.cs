@@ -22,7 +22,7 @@ namespace AppTree.Controllers
         // GET: Applications
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Applications.ToListAsync());
+            return View(await _context.Applications.Include(app => app.ApplicationType).ToListAsync());
         }
 
         // GET: Applications/Details/5

@@ -10,6 +10,7 @@ namespace AppTree.Domain.AggregateModels.ApplicationAggregate
         public string Name { get; set; }
         public string Summary { get; set; }
         public string Repository { get; set; }
+        public virtual ApplicationType ApplicationType { get; set; }
         public virtual ICollection<Dependency> Dependencies { get; set; }
     }
 }

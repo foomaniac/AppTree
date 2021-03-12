@@ -15,7 +15,10 @@
             <th class="col-3">
                 @Html.DisplayNameFor(model => model.Name)
             </th>
-            <th class="col-7">
+            <th class="col-2">
+                @Html.DisplayNameFor(model => model.ApplicationType.Type)
+            </th>
+            <th class="col-5">
                 @Html.DisplayNameFor(model => model.Summary)
             </th>
             <th class="col"></th>
@@ -27,7 +30,10 @@
             <td class="col-3">
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
-            <td class="col-7">
+            <td class="col-2">
+                @Html.DisplayFor(modelItem => item.ApplicationType.Type)
+            </td>
+            <td class="col-5">
                 @Html.DisplayFor(modelItem => item.Summary)
             </td>
             <td class="col">
