@@ -32,7 +32,7 @@ namespace AppTree.Infrastructure
 
         public async Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken = default)
         {
-            var result = await base.SaveChangesAsync(cancellationToken);
+            await base.SaveChangesAsync(cancellationToken);
 
             return true;
         }
