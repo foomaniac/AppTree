@@ -11,35 +11,28 @@
 </p>
 <table class="table">
     <thead>
-        <tr>
-            <th>
+        <tr class="row">
+            <th class="col-3">
                 @Html.DisplayNameFor(model => model.Name)
             </th>
-            <th>
+            <th class="col-7">
                 @Html.DisplayNameFor(model => model.Summary)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Repository)
-            </th>
-            <th></th>
+            <th class="col"></th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr>
-            <td>
+        <tr class="row">
+            <td class="col-3">
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
-            <td>
+            <td class="col-7">
                 @Html.DisplayFor(modelItem => item.Summary)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Repository)
-            </td>
-            <td>
+            <td class="col">
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a>
             </td>
         </tr>
 }
