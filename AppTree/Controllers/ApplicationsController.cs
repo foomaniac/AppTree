@@ -41,6 +41,8 @@ namespace AppTree.Controllers
             {
                 return NotFound();
             }
+            
+            ViewData["ApplicationId"] = new SelectList(_context.Applications, "Id", "Name");
 
             return View(application);
         }
@@ -80,6 +82,7 @@ namespace AppTree.Controllers
             {
                 return NotFound();
             }
+
             return View(application);
         }
 
@@ -145,6 +148,25 @@ namespace AppTree.Controllers
             _context.Applications.Remove(application);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        // POST: Dependencies/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateDependency([FromForm] int ParentApplicationId, [FromForm] int ApplicationId)
+        {
+            if (ModelState.IsValid)
+            {
+                var dependency = new Dependency()
+                    {ApplicationId = ApplicationId, ParentApplicationId = ParentApplicationId};
+                _context.Add(dependency);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Details),new { id = ParentApplicationId});
+            }
+      
+            return RedirectToAction(nameof(Details), ParentApplicationId);
         }
 
         private bool ApplicationExists(int? id)
