@@ -10,7 +10,7 @@ namespace AppTree.Infrastructure.Repositories
 {
     public class ApplicationRepository : IApplicationRepository
     {
-        private AppTreeContext _context;
+        private readonly AppTreeContext _context;
 
         public ApplicationRepository(AppTreeContext context)
         {
