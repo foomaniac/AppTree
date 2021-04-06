@@ -34,7 +34,9 @@ namespace AppTree.Infrastructure.Configurations
                 .HasColumnType("nvarchar(256)")
                 .IsRequired(false);
 
-            builder.HasMany(app => app.Dependencies).WithOne(app => app.ParentApplication).OnDelete(DeleteBehavior.NoAction); ;
+            builder.HasMany(app => app.Dependencies).WithOne(app => app.ParentApplication).OnDelete(DeleteBehavior.NoAction);
+
+            builder.HasOne(app => app.ApplicationType);
 
         }
     }
