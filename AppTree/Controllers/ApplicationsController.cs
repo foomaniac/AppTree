@@ -2,27 +2,31 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AppTree.Application.Queries;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AppTree.Domain.AggregateModels.ApplicationAggregate;
 using AppTree.Infrastructure;
+using MediatR;
 
 namespace AppTree.Controllers
 {
     public class ApplicationsController : Controller
     {
         private readonly AppTreeContext _context;
+        private readonly IMediator _mediator;
 
-        public ApplicationsController(AppTreeContext context)
+        public ApplicationsController(IMediator mediator,  AppTreeContext context)
         {
             _context = context;
+            _mediator = mediator;
         }
 
         // GET: Applications
         public async Task<IActionResult> Index()
-        {
-            return View(await _context.Applications.Include(app => app.ApplicationType).ToListAsync());
+        { 
+            return View(await _mediator.Send(new GetAllApplicationsQuery()));
         }
 
         // GET: Applications/Details/5
@@ -58,7 +62,7 @@ namespace AppTree.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Summary,Repository")] Application application)
+        public async Task<IActionResult> Create([Bind("Id,Name,Summary,Repository")] Domain.AggregateModels.ApplicationAggregate.Application application)
         {
             if (ModelState.IsValid)
             {
@@ -91,7 +95,7 @@ namespace AppTree.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int? id, [Bind("Id,Name,Summary,Repository")] Application application)
+        public async Task<IActionResult> Edit(int? id, [Bind("Id,Name,Summary,Repository")] Domain.AggregateModels.ApplicationAggregate.Application application)
         {
             if (id != application.Id)
             {
