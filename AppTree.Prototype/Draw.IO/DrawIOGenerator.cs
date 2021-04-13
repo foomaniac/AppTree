@@ -7,6 +7,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AppTree.Prototype.Draw.IO
 {
+    /// <summary>
+    /// POC To generate data to import into Draw.IO
+    /// </summary>
     public class DrawIOGenerator
     {
         private static AppTreeContext _context;

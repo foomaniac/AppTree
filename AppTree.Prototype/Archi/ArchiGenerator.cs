@@ -14,6 +14,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AppTree.Prototype.Archi
 {
+    /// <summary>
+    /// POC To create Archi compatible CSV files
+    /// </summary>
     public class ArchiGenerator
     {
         private static AppTreeContext _context;
