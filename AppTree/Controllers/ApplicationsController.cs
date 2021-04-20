@@ -30,17 +30,9 @@ namespace AppTree.Controllers
         }
 
         // GET: Applications/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var application = await _context.Applications
-                .Include(app => app.Dependencies)
-                .ThenInclude(app => app.Application)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var application = await _mediator.Send(new GetApplicationQuery() {ApplicationId = id});
             if (application == null)
             {
                 return NotFound();
@@ -74,14 +66,9 @@ namespace AppTree.Controllers
         }
 
         // GET: Applications/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var application = await _context.Applications.FindAsync(id);
+            var application = await _mediator.Send(new GetApplicationQuery() { ApplicationId = id });
             if (application == null)
             {
                 return NotFound();
