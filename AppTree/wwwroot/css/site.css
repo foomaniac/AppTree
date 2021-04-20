@@ -8,8 +8,8 @@ a.navbar-brand {
 }
 
 /* Provide sufficient contrast against white background */
-a {
-  color: #0366d6;
+.table-dark a {
+  color: #fff;
 }
 
 .btn-primary {
