@@ -11,7 +11,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppTree.Infrastructure", "A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppTree.Tests", "AppTree.Tests\AppTree.Tests.csproj", "{FF05B62F-2ECF-4D85-A968-2FB740381A2E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppTree.Prototype", "AppTree.Prototype\AppTree.Prototype.csproj", "{FE9F8094-A98D-48EF-9C20-0BB0676A826D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppTree.Prototype", "AppTree.Prototype\AppTree.Prototype.csproj", "{FE9F8094-A98D-48EF-9C20-0BB0676A826D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{0D8AC52C-0DE6-48EF-88C0-F1F2C50B818F}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
