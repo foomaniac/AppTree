@@ -44,8 +44,12 @@ namespace AppTree.Controllers
         }
 
         // GET: Applications/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            var applicationTypes = await _mediator.Send(new GetAllApplicationTypesQuery());
+
+            ViewData["ApplicationTypes"] = new SelectList(applicationTypes, "Id", "Type");
+
             return View();
         }
 
@@ -73,6 +77,10 @@ namespace AppTree.Controllers
             {
                 return NotFound();
             }
+
+            var applicationTypes = await _mediator.Send(new GetAllApplicationTypesQuery());
+
+            ViewData["ApplicationTypes"] = new SelectList(applicationTypes, "Id", "Type");
 
             return View(application);
         }

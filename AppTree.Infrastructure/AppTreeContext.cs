@@ -14,6 +14,8 @@ namespace AppTree.Infrastructure
         public DbSet<Application> Applications { get; set; }
         public DbSet<Dependency> Dependencies { get; set; }
 
+        public DbSet<ApplicationType> ApplicationTypes { get; set; }
+
         public AppTreeContext(DbContextOptions<AppTreeContext> options) : base(options)
         {
 
