@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppTree.Infrastructure.Migrations
 {
     [DbContext(typeof(AppTreeContext))]
-    [Migration("20210308155800_InitialCreate")]
+    [Migration("20210423141203_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -29,6 +29,10 @@ namespace AppTree.Infrastructure.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("ApplicationTypeId")
+                        .HasColumnName("ApplicationTypeId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnName("Name")
@@ -44,7 +48,65 @@ namespace AppTree.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ApplicationTypeId");
+
                     b.ToTable("Application","dbo");
+                });
+
+            modelBuilder.Entity("AppTree.Domain.AggregateModels.ApplicationAggregate.ApplicationEnvironment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("ApplicationId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("EnvironmentName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Host")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Url")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationId");
+
+                    b.ToTable("ApplicationEnvironment");
+                });
+
+            modelBuilder.Entity("AppTree.Domain.AggregateModels.ApplicationAggregate.ApplicationType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("Id")
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnName("Type")
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ApplicationType","dbo");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Type = "Web Page"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Type = "API"
+                        });
                 });
 
             modelBuilder.Entity("AppTree.Domain.AggregateModels.ApplicationAggregate.Dependency", b =>
@@ -60,6 +122,22 @@ namespace AppTree.Infrastructure.Migrations
                     b.HasIndex("ApplicationId");
 
                     b.ToTable("Dependency","dbo");
+                });
+
+            modelBuilder.Entity("AppTree.Domain.AggregateModels.ApplicationAggregate.Application", b =>
+                {
+                    b.HasOne("AppTree.Domain.AggregateModels.ApplicationAggregate.ApplicationType", "ApplicationType")
+                        .WithMany()
+                        .HasForeignKey("ApplicationTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("AppTree.Domain.AggregateModels.ApplicationAggregate.ApplicationEnvironment", b =>
+                {
+                    b.HasOne("AppTree.Domain.AggregateModels.ApplicationAggregate.Application", null)
+                        .WithMany("Environments")
+                        .HasForeignKey("ApplicationId");
                 });
 
             modelBuilder.Entity("AppTree.Domain.AggregateModels.ApplicationAggregate.Dependency", b =>

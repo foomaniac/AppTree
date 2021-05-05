@@ -10,9 +10,11 @@ namespace AppTree.Infrastructure
     public class AppTreeContext : DbContext, IUnitOfWork
     { 
 
-        public const string DEFAULT_SCHEMA = "dbo";
+        public const string DefaultSchema = "dbo";
         public DbSet<Application> Applications { get; set; }
         public DbSet<Dependency> Dependencies { get; set; }
+
+        public DbSet<ApplicationType> ApplicationTypes { get; set; }
 
         public AppTreeContext(DbContextOptions<AppTreeContext> options) : base(options)
         {

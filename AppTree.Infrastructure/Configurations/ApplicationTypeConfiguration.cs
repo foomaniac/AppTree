@@ -9,7 +9,7 @@ namespace AppTree.Infrastructure.Configurations
     {
         public void Configure(EntityTypeBuilder<ApplicationType> builder)
         {
-            builder.ToTable("ApplicationType", AppTreeContext.DEFAULT_SCHEMA);
+            builder.ToTable("ApplicationType", AppTreeContext.DefaultSchema);
 
             builder.HasKey(app => app.Id);
 

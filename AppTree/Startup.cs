@@ -9,6 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MediatR;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace AppTree
 {
@@ -25,6 +27,7 @@ namespace AppTree
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddPersistance(Configuration);
+            services.AddMediatR(typeof(Startup));
             services.AddControllersWithViews();
         }
 

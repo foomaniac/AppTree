@@ -9,7 +9,7 @@ namespace AppTree.Infrastructure.Configurations
     {
         public void Configure(EntityTypeBuilder<Application> builder)
         {
-            builder.ToTable("Application", AppTreeContext.DEFAULT_SCHEMA);
+            builder.ToTable("Application", AppTreeContext.DefaultSchema);
 
             builder.HasKey(app => app.Id);
 
@@ -33,6 +33,11 @@ namespace AppTree.Infrastructure.Configurations
                 .HasColumnName(nameof(Application.Repository))
                 .HasColumnType("nvarchar(256)")
                 .IsRequired(false);
+
+            builder.Property(app => app.ApplicationTypeId)
+                .HasColumnName(nameof(Application.ApplicationTypeId))
+                .HasColumnType("int")
+                .IsRequired();
 
             builder.HasMany(app => app.Dependencies).WithOne(app => app.ParentApplication).OnDelete(DeleteBehavior.NoAction);
 

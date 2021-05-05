@@ -2,41 +2,37 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AppTree.Application.Queries;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AppTree.Domain.AggregateModels.ApplicationAggregate;
 using AppTree.Infrastructure;
+using MediatR;
 
 namespace AppTree.Controllers
 {
     public class ApplicationsController : Controller
     {
         private readonly AppTreeContext _context;
+        private readonly IMediator _mediator;
 
-        public ApplicationsController(AppTreeContext context)
+        public ApplicationsController(IMediator mediator,  AppTreeContext context)
         {
             _context = context;
+            _mediator = mediator;
         }
 
         // GET: Applications
         public async Task<IActionResult> Index()
-        {
-            return View(await _context.Applications.Include(app => app.ApplicationType).ToListAsync());
+        { 
+            return View(await _mediator.Send(new GetAllApplicationsQuery()));
         }
 
         // GET: Applications/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var application = await _context.Applications
-                .Include(app => app.Dependencies)
-                .ThenInclude(app => app.Application)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var application = await _mediator.Send(new GetApplicationQuery() {ApplicationId = id});
             if (application == null)
             {
                 return NotFound();
@@ -48,8 +44,12 @@ namespace AppTree.Controllers
         }
 
         // GET: Applications/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            var applicationTypes = await _mediator.Send(new GetAllApplicationTypesQuery());
+
+            ViewData["ApplicationTypes"] = new SelectList(applicationTypes, "Id", "Type");
+
             return View();
         }
 
@@ -58,7 +58,7 @@ namespace AppTree.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Summary,Repository")] Application application)
+        public async Task<IActionResult> Create([Bind("Id,Name,Summary,Repository")] Domain.AggregateModels.ApplicationAggregate.Application application)
         {
             if (ModelState.IsValid)
             {
@@ -70,18 +70,17 @@ namespace AppTree.Controllers
         }
 
         // GET: Applications/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var application = await _context.Applications.FindAsync(id);
+            var application = await _mediator.Send(new GetApplicationQuery() { ApplicationId = id });
             if (application == null)
             {
                 return NotFound();
             }
+
+            var applicationTypes = await _mediator.Send(new GetAllApplicationTypesQuery());
+
+            ViewData["ApplicationTypes"] = new SelectList(applicationTypes, "Id", "Type");
 
             return View(application);
         }
@@ -91,7 +90,7 @@ namespace AppTree.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int? id, [Bind("Id,Name,Summary,Repository")] Application application)
+        public async Task<IActionResult> Edit(int? id, [Bind("Id,Name,Summary,Repository")] Domain.AggregateModels.ApplicationAggregate.Application application)
         {
             if (id != application.Id)
             {

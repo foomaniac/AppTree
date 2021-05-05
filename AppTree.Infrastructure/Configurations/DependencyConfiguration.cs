@@ -12,7 +12,7 @@ namespace AppTree.Infrastructure.Configurations
     {
         public void Configure(EntityTypeBuilder<Dependency> builder)
         {
-            builder.ToTable("Dependency", AppTreeContext.DEFAULT_SCHEMA);
+            builder.ToTable("Dependency", AppTreeContext.DefaultSchema);
 
             builder.HasKey(key => new { key.ParentApplicationId, key.ApplicationId });
 

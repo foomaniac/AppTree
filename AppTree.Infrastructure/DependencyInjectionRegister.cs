@@ -4,6 +4,8 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using AppTree.Domain.AggregateModels.ApplicationAggregate;
+using AppTree.Infrastructure.Repositories;
 
 namespace AppTree.Infrastructure
 {
@@ -11,6 +13,7 @@ namespace AppTree.Infrastructure
     {
         public static IServiceCollection AddPersistance(this IServiceCollection @this, IConfiguration configuration)
         {
+            
             @this.AddDbContext<AppTreeContext, AppTreeContext>(options =>
             {
                 options.UseSqlServer(configuration.GetConnectionString("AppTreeContext"),
@@ -23,6 +26,8 @@ namespace AppTree.Infrastructure
 
             });
 
+            @this.AddScoped<IApplicationRepository, ApplicationRepository>();
+            
             return @this;
         }
     }

@@ -27,7 +27,8 @@ namespace AppTree.Infrastructure.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("ApplicationTypeId")
+                    b.Property<int>("ApplicationTypeId")
+                        .HasColumnName("ApplicationTypeId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -48,6 +49,32 @@ namespace AppTree.Infrastructure.Migrations
                     b.HasIndex("ApplicationTypeId");
 
                     b.ToTable("Application","dbo");
+                });
+
+            modelBuilder.Entity("AppTree.Domain.AggregateModels.ApplicationAggregate.ApplicationEnvironment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("ApplicationId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("EnvironmentName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Host")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Url")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationId");
+
+                    b.ToTable("ApplicationEnvironment");
                 });
 
             modelBuilder.Entity("AppTree.Domain.AggregateModels.ApplicationAggregate.ApplicationType", b =>
@@ -99,7 +126,16 @@ namespace AppTree.Infrastructure.Migrations
                 {
                     b.HasOne("AppTree.Domain.AggregateModels.ApplicationAggregate.ApplicationType", "ApplicationType")
                         .WithMany()
-                        .HasForeignKey("ApplicationTypeId");
+                        .HasForeignKey("ApplicationTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("AppTree.Domain.AggregateModels.ApplicationAggregate.ApplicationEnvironment", b =>
+                {
+                    b.HasOne("AppTree.Domain.AggregateModels.ApplicationAggregate.Application", null)
+                        .WithMany("Environments")
+                        .HasForeignKey("ApplicationId");
                 });
 
             modelBuilder.Entity("AppTree.Domain.AggregateModels.ApplicationAggregate.Dependency", b =>
