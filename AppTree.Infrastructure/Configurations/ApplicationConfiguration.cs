@@ -41,6 +41,8 @@ namespace AppTree.Infrastructure.Configurations
 
             builder.HasMany(app => app.Dependencies).WithOne(app => app.ParentApplication).OnDelete(DeleteBehavior.NoAction);
 
+            builder.HasMany(app => app.Environments).WithOne(app => app.ParentApplication).OnDelete(DeleteBehavior.NoAction);
+
             builder.HasOne(app => app.ApplicationType);
 
         }

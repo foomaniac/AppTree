@@ -23,6 +23,8 @@ namespace AppTree.Application.Queries
             return await _context.Applications
                 .Include(app => app.Dependencies)
                 .ThenInclude(app => app.Application)
+                .Include(app => app.Environments)
+                .ThenInclude(app => app.ParentApplication)
                 .FirstOrDefaultAsync(m => m.Id == request.ApplicationId, cancellationToken: cancellationToken);
         }
     }

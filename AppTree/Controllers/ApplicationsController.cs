@@ -17,7 +17,7 @@ namespace AppTree.Controllers
         private readonly AppTreeContext _context;
         private readonly IMediator _mediator;
 
-        public ApplicationsController(IMediator mediator,  AppTreeContext context)
+        public ApplicationsController(IMediator mediator, AppTreeContext context)
         {
             _context = context;
             _mediator = mediator;
@@ -25,7 +25,7 @@ namespace AppTree.Controllers
 
         // GET: Applications
         public async Task<IActionResult> Index()
-        { 
+        {
             return View(await _mediator.Send(new GetAllApplicationsQuery()));
         }
 
@@ -37,7 +37,7 @@ namespace AppTree.Controllers
             {
                 return NotFound();
             }
-            
+
             ViewData["ApplicationId"] = new SelectList(_context.Applications, "Id", "Name");
 
             return View(application);
@@ -58,7 +58,8 @@ namespace AppTree.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Summary,Repository")] Domain.AggregateModels.ApplicationAggregate.Application application)
+        public async Task<IActionResult> Create(
+            [Bind("Id,Name,Summary,Repository")] Domain.AggregateModels.ApplicationAggregate.Application application)
         {
             if (ModelState.IsValid)
             {
@@ -66,13 +67,14 @@ namespace AppTree.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             return View(application);
         }
 
         // GET: Applications/Edit/5
         public async Task<IActionResult> Edit(int id)
         {
-            var application = await _mediator.Send(new GetApplicationQuery() { ApplicationId = id });
+            var application = await _mediator.Send(new GetApplicationQuery() {ApplicationId = id});
             if (application == null)
             {
                 return NotFound();
@@ -90,7 +92,8 @@ namespace AppTree.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int? id, [Bind("Id,Name,Summary,Repository")] Domain.AggregateModels.ApplicationAggregate.Application application)
+        public async Task<IActionResult> Edit(int? id,
+            [Bind("Id,Name,Summary,Repository")] Domain.AggregateModels.ApplicationAggregate.Application application)
         {
             if (id != application.Id)
             {
@@ -115,8 +118,10 @@ namespace AppTree.Controllers
                         throw;
                     }
                 }
+
                 return RedirectToAction(nameof(Index));
             }
+
             return View(application);
         }
 
@@ -154,7 +159,8 @@ namespace AppTree.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateDependency([FromForm] int ParentApplicationId, [FromForm] int ApplicationId)
+        public async Task<IActionResult> CreateDependency([FromForm] int ParentApplicationId,
+            [FromForm] int ApplicationId)
         {
             if (ModelState.IsValid)
             {
@@ -162,15 +168,31 @@ namespace AppTree.Controllers
                     {ApplicationId = ApplicationId, ParentApplicationId = ParentApplicationId};
                 _context.Add(dependency);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Details),new { id = ParentApplicationId});
+                return RedirectToAction(nameof(Details), new {id = ParentApplicationId});
             }
-      
-            return RedirectToAction(nameof(Details), ParentApplicationId);
+
+            return RedirectToAction(nameof(Details), new { id = ParentApplicationId });
         }
 
         private bool ApplicationExists(int? id)
         {
             return _context.Applications.Any(e => e.Id == id);
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddEnvironment([FromForm] int ApplicationId, [FromForm] string EnvironmentName,
+            [FromForm] string Host, [FromForm] string Url)
+        {
+            var appEnvironment = new ApplicationEnvironment()
+                {ApplicationId = ApplicationId, EnvironmentName = EnvironmentName, Host = Host, Url = Url};
+
+            await _context.ApplicationEnvironments.AddAsync(appEnvironment);
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Details), new {id = ApplicationId});
+        }
     }
 }
+
