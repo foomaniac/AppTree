@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AppTree.Domain.AggregateModels.ApplicationAggregate;
 using AppTree.Infrastructure;
+using AppTree.Models;
 using MediatR;
 
 namespace AppTree.Controllers
@@ -59,11 +60,14 @@ namespace AppTree.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(
-            [Bind("Id,Name,Summary,Repository")] Domain.AggregateModels.ApplicationAggregate.Application application)
+            [Bind("ApplicationTypeId,Name,Summary,Repository")] CreateApplicationViewModel application)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(application);
+                var newApplication = new Domain.AggregateModels.ApplicationAggregate.Application(application.Name,
+                    application.Summary, application.Repository, application.ApplicationTypeId);
+
+                _context.Add(newApplication);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
