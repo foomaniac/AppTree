@@ -96,16 +96,19 @@ namespace AppTree.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int? id,
-            [Bind("Id,Name,Summary,Repository")] Domain.AggregateModels.ApplicationAggregate.Application application)
+        public async Task<IActionResult> Edit(int id,
+            [Bind("ApplicationTypeId,Name,Summary,Repository")] CreateApplicationViewModel applicationModel)
         {
-            if (id != application.Id)
+            if (id == default)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
+                var application = await _mediator.Send(new GetApplicationQuery() { ApplicationId = id });
+                application.UpdateApplication(applicationModel.Name, applicationModel.Summary, applicationModel.Repository, applicationModel.ApplicationTypeId);
+
                 try
                 {
                     _context.Update(application);
@@ -113,7 +116,7 @@ namespace AppTree.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ApplicationExists(application.Id))
+                    if (!ApplicationExists(id))
                     {
                         return NotFound();
                     }
@@ -126,7 +129,7 @@ namespace AppTree.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            return View(application);
+            return View(applicationModel);
         }
 
         // GET: Applications/Delete/5
