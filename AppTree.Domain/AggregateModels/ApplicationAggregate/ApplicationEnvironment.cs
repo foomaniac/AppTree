@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace AppTree.Domain.AggregateModels.ApplicationAggregate
+﻿namespace AppTree.Domain.AggregateModels.ApplicationAggregate
 {
     public class ApplicationEnvironment
     {
@@ -11,5 +7,7 @@ namespace AppTree.Domain.AggregateModels.ApplicationAggregate
         public string Host { get; set; }
         public string Url { get; set; }
 
+        public int ApplicationId { get; set; }
+        public Application ParentApplication { get; set; }
     }
 }

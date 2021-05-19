@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AppTree.Domain.AggregateModels.ApplicationAggregate;
 using AppTree.Infrastructure;
+using AppTree.Models;
 using MediatR;
 
 namespace AppTree.Controllers
@@ -17,7 +18,7 @@ namespace AppTree.Controllers
         private readonly AppTreeContext _context;
         private readonly IMediator _mediator;
 
-        public ApplicationsController(IMediator mediator,  AppTreeContext context)
+        public ApplicationsController(IMediator mediator, AppTreeContext context)
         {
             _context = context;
             _mediator = mediator;
@@ -25,7 +26,7 @@ namespace AppTree.Controllers
 
         // GET: Applications
         public async Task<IActionResult> Index()
-        { 
+        {
             return View(await _mediator.Send(new GetAllApplicationsQuery()));
         }
 
@@ -37,7 +38,7 @@ namespace AppTree.Controllers
             {
                 return NotFound();
             }
-            
+
             ViewData["ApplicationId"] = new SelectList(_context.Applications, "Id", "Name");
 
             return View(application);
@@ -58,21 +59,26 @@ namespace AppTree.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Summary,Repository")] Domain.AggregateModels.ApplicationAggregate.Application application)
+        public async Task<IActionResult> Create(
+            [Bind("ApplicationTypeId,Name,Summary,Repository")] CreateApplicationViewModel application)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(application);
+                var newApplication = new Domain.AggregateModels.ApplicationAggregate.Application(application.Name,
+                    application.Summary, application.Repository, application.ApplicationTypeId);
+
+                _context.Add(newApplication);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             return View(application);
         }
 
         // GET: Applications/Edit/5
         public async Task<IActionResult> Edit(int id)
         {
-            var application = await _mediator.Send(new GetApplicationQuery() { ApplicationId = id });
+            var application = await _mediator.Send(new GetApplicationQuery() {ApplicationId = id});
             if (application == null)
             {
                 return NotFound();
@@ -90,15 +96,19 @@ namespace AppTree.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int? id, [Bind("Id,Name,Summary,Repository")] Domain.AggregateModels.ApplicationAggregate.Application application)
+        public async Task<IActionResult> Edit(int id,
+            [Bind("ApplicationTypeId,Name,Summary,Repository")] CreateApplicationViewModel applicationModel)
         {
-            if (id != application.Id)
+            if (id == default)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
+                var application = await _mediator.Send(new GetApplicationQuery() { ApplicationId = id });
+                application.UpdateApplication(applicationModel.Name, applicationModel.Summary, applicationModel.Repository, applicationModel.ApplicationTypeId);
+
                 try
                 {
                     _context.Update(application);
@@ -106,7 +116,7 @@ namespace AppTree.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ApplicationExists(application.Id))
+                    if (!ApplicationExists(id))
                     {
                         return NotFound();
                     }
@@ -115,9 +125,11 @@ namespace AppTree.Controllers
                         throw;
                     }
                 }
+
                 return RedirectToAction(nameof(Index));
             }
-            return View(application);
+
+            return View(applicationModel);
         }
 
         // GET: Applications/Delete/5
@@ -154,7 +166,8 @@ namespace AppTree.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateDependency([FromForm] int ParentApplicationId, [FromForm] int ApplicationId)
+        public async Task<IActionResult> CreateDependency([FromForm] int ParentApplicationId,
+            [FromForm] int ApplicationId)
         {
             if (ModelState.IsValid)
             {
@@ -162,15 +175,31 @@ namespace AppTree.Controllers
                     {ApplicationId = ApplicationId, ParentApplicationId = ParentApplicationId};
                 _context.Add(dependency);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Details),new { id = ParentApplicationId});
+                return RedirectToAction(nameof(Details), new {id = ParentApplicationId});
             }
-      
-            return RedirectToAction(nameof(Details), ParentApplicationId);
+
+            return RedirectToAction(nameof(Details), new { id = ParentApplicationId });
         }
 
         private bool ApplicationExists(int? id)
         {
             return _context.Applications.Any(e => e.Id == id);
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddEnvironment([FromForm] int ApplicationId, [FromForm] string EnvironmentName,
+            [FromForm] string Host, [FromForm] string Url)
+        {
+            var appEnvironment = new ApplicationEnvironment()
+                {ApplicationId = ApplicationId, EnvironmentName = EnvironmentName, Host = Host, Url = Url};
+
+            await _context.ApplicationEnvironments.AddAsync(appEnvironment);
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Details), new {id = ApplicationId});
+        }
     }
 }
+
