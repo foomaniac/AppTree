@@ -16,11 +16,17 @@ namespace AppTree.Infrastructure.Configurations
 
             builder.HasKey(key => new { key.Id });
 
+            builder.Property(app => app.HostId)
+                .HasColumnName(nameof(ApplicationEnvironment.HostId))
+                .HasColumnType("int").IsRequired();
+
+            builder.HasOne(app => app.Host);
+
             builder.HasOne(appEnv => appEnv.ParentApplication)
                 .WithMany(appEnv => appEnv.Environments)
                 .HasForeignKey(appEnv =>appEnv.ApplicationId)
                 .OnDelete(DeleteBehavior.NoAction);
-            
+
         }
     }
 }

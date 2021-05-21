@@ -27,7 +27,8 @@ namespace AppTree.Infrastructure
             });
 
             @this.AddScoped<IApplicationRepository, ApplicationRepository>();
-            
+            @this.AddScoped<IApplicationEnvironmentRepository, ApplicationEnvironmentRepository>();
+
             return @this;
         }
     }

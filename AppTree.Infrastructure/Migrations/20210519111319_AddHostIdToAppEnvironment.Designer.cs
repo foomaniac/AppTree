@@ -4,14 +4,16 @@ using AppTree.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AppTree.Infrastructure.Migrations
 {
     [DbContext(typeof(AppTreeContext))]
-    partial class AppTreeContextModelSnapshot : ModelSnapshot
+    [Migration("20210519111319_AddHostIdToAppEnvironment")]
+    partial class AddHostIdToAppEnvironment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -64,9 +66,12 @@ namespace AppTree.Infrastructure.Migrations
                     b.Property<string>("EnvironmentName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("HostId")
+                    b.Property<int?>("HostId")
                         .HasColumnName("HostId")
                         .HasColumnType("int");
+
+                    b.Property<string>("HostName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Url")
                         .HasColumnType("nvarchar(max)");
@@ -212,9 +217,7 @@ namespace AppTree.Infrastructure.Migrations
 
                     b.HasOne("AppTree.Domain.AggregateModels.HostAggregate.Host", "Host")
                         .WithMany()
-                        .HasForeignKey("HostId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("HostId");
                 });
 
             modelBuilder.Entity("AppTree.Domain.AggregateModels.ApplicationAggregate.Dependency", b =>

@@ -58,7 +58,7 @@
 
                 <div class="form-group">
                     <label title="Application" class="control-label"></label>
-                    <select id="ApplicationId" name="ApplicationId" class="form-control" asp-items="ViewBag.ApplicationId"></select>
+                    <select id="ApplicationId" name="ApplicationId" class="form-control" asp-items="ViewBag.Applications"></select>
                 </div>
                 <div class="form-group">
                     <input type="submit" value="Create" class="btn btn-primary" />
@@ -88,7 +88,7 @@
             {
                 <tr>
                     <td>@applicationEnvironment.EnvironmentName</td>
-                    <td>@applicationEnvironment.Host</td>
+                    <td>@applicationEnvironment.Host.HostName</td>
                     <td>@applicationEnvironment.Url</td>
                 </tr>
             }
@@ -113,13 +113,7 @@
                     </div>
                     <div class="form-group">
                         <label class="control-label">Host</label>
-                        <select class="form-control" id="Host" name="Host" required="">
-                            <option value="PRAPI02">PRAPI02</option>
-                            <option value="PRAPI04">PRAPI04</option>
-                            <option value="PRAPI05">PRAPI05</option>
-                            <option value="PRAPI11">PRAPI11</option>
-                            <option value="PRAPI21">PRAPI21</option>
-                        </select>
+                        <select id="HostId" name="HostId" class="form-control" asp-items="ViewBag.Hosts"></select>
                     </div>
                     <div class="form-group">
                         <label class="control-label">Url</label>

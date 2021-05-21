@@ -4,14 +4,16 @@ using AppTree.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AppTree.Infrastructure.Migrations
 {
     [DbContext(typeof(AppTreeContext))]
-    partial class AppTreeContextModelSnapshot : ModelSnapshot
+    [Migration("20210519105807_AddHost")]
+    partial class AddHost
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -64,9 +66,8 @@ namespace AppTree.Infrastructure.Migrations
                     b.Property<string>("EnvironmentName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("HostId")
-                        .HasColumnName("HostId")
-                        .HasColumnType("int");
+                    b.Property<string>("Host")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Url")
                         .HasColumnType("nvarchar(max)");
@@ -74,8 +75,6 @@ namespace AppTree.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ApplicationId");
-
-                    b.HasIndex("HostId");
 
                     b.ToTable("ApplicationEnvironment","dbo");
                 });
@@ -208,12 +207,6 @@ namespace AppTree.Infrastructure.Migrations
                         .WithMany("Environments")
                         .HasForeignKey("ApplicationId")
                         .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("AppTree.Domain.AggregateModels.HostAggregate.Host", "Host")
-                        .WithMany()
-                        .HasForeignKey("HostId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
