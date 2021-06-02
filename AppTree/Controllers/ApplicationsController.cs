@@ -16,12 +16,10 @@ namespace AppTree.Controllers
 {
     public class ApplicationsController : Controller
     {
-        private readonly AppTreeContext _context;
         private readonly IMediator _mediator;
 
-        public ApplicationsController(IMediator mediator, AppTreeContext context)
+        public ApplicationsController(IMediator mediator)
         {
-            _context = context;
             _mediator = mediator;
         }
 
@@ -134,10 +132,9 @@ namespace AppTree.Controllers
         {
             if (ModelState.IsValid)
             {
-                var dependency = new Dependency()
-                    {ApplicationId = ApplicationId, ParentApplicationId = ParentApplicationId};
-                _context.Add(dependency);
-                await _context.SaveChangesAsync();
+                var success =
+                   await _mediator.Send(new CreateApplicationDependencyCommand(ParentApplicationId, ApplicationId));
+
                 return RedirectToAction(nameof(Details), new {id = ParentApplicationId});
             }
 
