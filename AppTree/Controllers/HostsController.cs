@@ -25,9 +25,9 @@ namespace AppTree.Controllers
         }
 
         // GET: HostsController/Details/5
-            public ActionResult Details(int id)
+        public async Task<IActionResult> DetailsAsync(int id)
         {
-            return View();
+            return View(await _mediator.Send(new GetApplicationHostQuery(id)));
         }
 
         // GET: HostsController/Create

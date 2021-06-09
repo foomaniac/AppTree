@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AppTree.Domain.AggregateModels.ApplicationAggregate;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -16,5 +17,12 @@ namespace AppTree.Domain.AggregateModels.HostAggregate
         /// </summary>
         public string Location { get; private set; }
         public string Summary { get; private set; }
+
+        public ICollection<ApplicationEnvironment> Applications { get; }
+
+        public Host()
+        {
+            Applications = new List<ApplicationEnvironment>();
+        }
     }
 }

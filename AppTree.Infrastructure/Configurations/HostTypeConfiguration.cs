@@ -12,31 +12,35 @@ namespace AppTree.Infrastructure.Configurations
         {
             builder.ToTable("Host", AppTreeContext.DefaultSchema);
 
-            builder.HasKey(app => app.Id);
+            builder.HasKey(host => host.Id);
 
             builder
-                .Property(app => app.Id)
+                .Property(host => host.Id)
                 .HasColumnName(nameof(Host.Id))
                 .HasColumnType("int")
                 .IsRequired();
 
-            builder.Property(app => app.HostName)
+            builder.Property(host => host.HostName)
                 .HasColumnName(nameof(Host.HostName))
                 .HasColumnType("nvarchar(256)")
                 .IsRequired();
             
-            builder.Property(app => app.Domain)
+            builder.Property(host => host.Domain)
                 .HasColumnName(nameof(Host.Domain))
                 .HasColumnType("nvarchar(256)");
 
-            builder.Property(app => app.Location)
+            builder.Property(host => host.Location)
                 .HasColumnName(nameof(Host.Location))
                 .HasColumnType("nvarchar(100)")
                 .IsRequired();
 
-            builder.Property(app => app.Summary)
+            builder.Property(host => host.Summary)
                 .HasColumnName(nameof(Host.Summary))
                 .HasColumnType("nvarchar(max)");
+
+            builder.HasMany(host => host.Applications)
+                .WithOne(appEnv => appEnv.Host)
+                .HasForeignKey(appEnv => appEnv.HostId);
 
             builder.HasData(new {Id = 1, HostName = "PRAPI02", Domain = "agepartnership.com", Location = "OnPrem" },
                 new { Id = 2, HostName = "PRAPI11", Domain = "agepartnership.com", Location = "OnPrem" },
