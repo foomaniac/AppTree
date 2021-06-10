@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using AppTree.Domain.AggregateModels.ApplicationAggregate;
 using AppTree.Infrastructure.Repositories;
+using AppTree.Domain.AggregateModels.HostAggregate;
 
 namespace AppTree.Infrastructure
 {
@@ -27,6 +28,7 @@ namespace AppTree.Infrastructure
 
             @this.AddScoped<IApplicationDependencyRepository, ApplicationDependencyRepository>();
             @this.AddScoped<IApplicationEnvironmentRepository, ApplicationEnvironmentRepository>();
+            @this.AddScoped<IHostRepository,HostRepository>();
 
             return @this;
         }

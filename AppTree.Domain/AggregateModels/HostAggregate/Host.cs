@@ -1,4 +1,5 @@
 ﻿using AppTree.Domain.AggregateModels.ApplicationAggregate;
+using System;
 using System.Collections.Generic;
 
 namespace AppTree.Domain.AggregateModels.HostAggregate
@@ -23,6 +24,12 @@ namespace AppTree.Domain.AggregateModels.HostAggregate
             Applications = new List<ApplicationEnvironment>();
         }
 
-
+        public void UpdateHost(string hostName, string domain, string location, string summary)
+        {
+            HostName = hostName;
+            Domain = domain;
+            Location = location;
+            Summary = summary;
+        }
     }
 }

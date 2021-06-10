@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using AppTree.Application.Queries;
 using MediatR;
+using AppTree.Models;
+using AppTree.Application.Commands;
 
 namespace AppTree.Controllers
 {
@@ -54,19 +56,32 @@ namespace AppTree.Controllers
             return View(await _mediator.Send(new GetApplicationHostQuery(id)));
         }
 
-        // POST: HostsController/Edit/5
+
+        // POST: Applications/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<IActionResult> Edit(int id,
+            [Bind("HostName,Domain,Summary,Location")] CreateHostViewModel hostModel)
         {
-            try
+            if (id == default)
             {
-                return RedirectToAction(nameof(Index));
+                return NotFound();
             }
-            catch
+
+            if (ModelState.IsValid)
             {
-                return View();
+                var success = await _mediator.Send(new UpdateHostCommand(id, hostModel.HostName,
+                    hostModel.Domain, hostModel.Location, hostModel.Summary));
+
+                if (success)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
             }
+
+            return View(hostModel);
         }
 
         // GET: HostsController/Delete/5
