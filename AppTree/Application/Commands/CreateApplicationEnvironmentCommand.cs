@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata;
-using System.Threading.Tasks;
-using AppTree.Domain.AggregateModels.ApplicationAggregate;
-using AppTree.Domain.AggregateModels.HostAggregate;
-using MediatR;
+﻿using MediatR;
 
 namespace AppTree.Application.Commands
 {

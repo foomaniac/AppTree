@@ -1,8 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using AppTree.Application.Queries;
 using MediatR;
@@ -52,9 +49,9 @@ namespace AppTree.Controllers
         }
 
         // GET: HostsController/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> EditAsync(int id)
         {
-            return View();
+            return View(await _mediator.Send(new GetApplicationHostQuery(id)));
         }
 
         // POST: HostsController/Edit/5

@@ -1,6 +1,4 @@
-﻿using AppTree.Domain.AggregateModels;
-using AppTree.Domain.AggregateModels.ApplicationAggregate;
-using AppTree.Domain.AggregateModels.HostAggregate;
+﻿using AppTree.Domain.AggregateModels.HostAggregate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

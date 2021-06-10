@@ -1,10 +1,6 @@
 ﻿using AppTree.Domain.AggregateModels.ApplicationAggregate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace AppTree.Infrastructure.Configurations
 {

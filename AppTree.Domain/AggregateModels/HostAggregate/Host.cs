@@ -1,11 +1,9 @@
 ﻿using AppTree.Domain.AggregateModels.ApplicationAggregate;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace AppTree.Domain.AggregateModels.HostAggregate
 {
-   public class Host
+    public class Host
     {
         public int? Id { get; }
         public string HostName { get; private set; }
@@ -24,5 +22,7 @@ namespace AppTree.Domain.AggregateModels.HostAggregate
         {
             Applications = new List<ApplicationEnvironment>();
         }
+
+
     }
 }

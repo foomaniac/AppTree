@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace AppTree.Domain.AggregateModels.ApplicationAggregate
+﻿namespace AppTree.Domain.AggregateModels.ApplicationAggregate
 {
-   public class Dependency
+    public class Dependency
     {
         public int ParentApplicationId { get; set; }
         public Application ParentApplication { get;  }

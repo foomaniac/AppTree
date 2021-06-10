@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using AppTree.Infrastructure;
 using MediatR;
@@ -20,7 +17,10 @@ namespace AppTree.Application.Queries
 
         public async Task<Domain.AggregateModels.HostAggregate.Host> Handle(GetApplicationHostQuery request, CancellationToken cancellationToken)
         {
-            return await _context.Hosts.FirstOrDefaultAsync(host => host.Id == request.HostId,cancellationToken: cancellationToken);
+            return await _context.Hosts
+                .Include(host => host.Applications)
+                .ThenInclude(app => app.ParentApplication)
+                .FirstOrDefaultAsync(host => host.Id == request.HostId,cancellationToken: cancellationToken);
         }
     }
 }

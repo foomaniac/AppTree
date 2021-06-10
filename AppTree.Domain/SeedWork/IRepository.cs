@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AppTree.Domain.Seedwork
+﻿namespace AppTree.Domain.Seedwork
 {
     public interface IRepository<T> where T : class
     {

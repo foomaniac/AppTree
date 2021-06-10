@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using AppTree.Application.Commands;
 using AppTree.Application.Queries;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using AppTree.Domain.AggregateModels.ApplicationAggregate;
-using AppTree.Infrastructure;
 using AppTree.Models;
 using MediatR;
 
