@@ -38,16 +38,19 @@ namespace AppTree.Controllers
         // POST: HostsController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<ActionResult> CreateAsync([Bind("HostName,Domain,Summary,Location")] CreateHostViewModel host)
         {
-            try
+            if (ModelState.IsValid)
             {
-                return RedirectToAction(nameof(Index));
+                var success = await _mediator.Send(new CreateHostCommand(host.HostName, host.Domain, host.Location, host.Summary);
+
+                if (success) {
+                    return RedirectToAction(nameof(Index));
+                }
+
             }
-            catch
-            {
-                return View();
-            }
+
+            return View(host);
         }
 
         // GET: HostsController/Edit/5
@@ -82,27 +85,6 @@ namespace AppTree.Controllers
             }
 
             return View(hostModel);
-        }
-
-        // GET: HostsController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: HostsController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
         }
     }
 }

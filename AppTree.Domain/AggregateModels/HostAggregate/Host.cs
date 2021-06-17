@@ -19,8 +19,12 @@ namespace AppTree.Domain.AggregateModels.HostAggregate
 
         public ICollection<ApplicationEnvironment> Applications { get; }
 
-        public Host()
+        public Host(string hostName, string domain, string location, string summary)
         {
+            HostName = hostName;
+            Domain = domain;
+            Location = location;
+            Summary = summary;
             Applications = new List<ApplicationEnvironment>();
         }
 
