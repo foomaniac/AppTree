@@ -26,7 +26,7 @@ namespace AppTree.Controllers
         // GET: Applications/Details/5
         public async Task<IActionResult> Details(int id)
         {
-            var application = await _mediator.Send(new GetApplicationQuery() {ApplicationId = id});
+            var application = await _mediator.Send(new GetApplicationQuery() { ApplicationId = id });
             if (application == null)
             {
                 return NotFound();
@@ -63,11 +63,11 @@ namespace AppTree.Controllers
                 var newApplicationCommand = new CreateApplicationCommand(application.Name, application.Summary,
                     application.Repository, application.ApplicationTypeId);
 
-               var success = await _mediator.Send(newApplicationCommand);
-               if (success)
-               {
-                   return RedirectToAction(nameof(Index));
-               }
+                var success = await _mediator.Send(newApplicationCommand);
+                if (success)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
             }
 
             return View(application);
@@ -76,7 +76,7 @@ namespace AppTree.Controllers
         // GET: Applications/Edit/5
         public async Task<IActionResult> Edit(int id)
         {
-            var application = await _mediator.Send(new GetApplicationQuery() {ApplicationId = id});
+            var application = await _mediator.Send(new GetApplicationQuery() { ApplicationId = id });
             if (application == null)
             {
                 return NotFound();
@@ -129,23 +129,26 @@ namespace AppTree.Controllers
                 var success =
                    await _mediator.Send(new CreateApplicationDependencyCommand(ParentApplicationId, ApplicationId));
 
-                return RedirectToAction(nameof(Details), new {id = ParentApplicationId});
+                if (success)
+                {
+                    return RedirectToAction(nameof(Details), new { id = ParentApplicationId });
+                }
             }
 
             return RedirectToAction(nameof(Details), new { id = ParentApplicationId });
         }
-        
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddEnvironment([FromForm] int ApplicationId, [FromForm] string EnvironmentName,
             [FromForm] int HostId, [FromForm] string Url)
         {
-            var success =
-                await _mediator.Send(
-                    new CreateApplicationEnvironmentCommand(EnvironmentName, HostId, Url, ApplicationId));
+            await _mediator.Send(
+                new CreateApplicationEnvironmentCommand(EnvironmentName, HostId, Url, ApplicationId));
 
             return RedirectToAction(nameof(Details), new { id = ApplicationId });
+
         }
     }
 }

@@ -17,7 +17,7 @@ namespace AppTree.Application.Commands
         public Task<bool> Handle(CreateApplicationDependencyCommand request, CancellationToken cancellationToken)
         {
 
-            var newApplicationDependency = new Domain.AggregateModels.ApplicationAggregate.Dependency(request.ParentApplicationId, request.ApplicationId);
+            var newApplicationDependency = new Dependency(request.ParentApplicationId, request.ApplicationId);
 
             _applicationDependencyRepository.Add(newApplicationDependency);
 
