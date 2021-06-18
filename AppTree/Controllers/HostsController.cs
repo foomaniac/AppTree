@@ -42,7 +42,7 @@ namespace AppTree.Controllers
         {
             if (ModelState.IsValid)
             {
-                var success = await _mediator.Send(new CreateHostCommand(host.HostName, host.Domain, host.Location, host.Summary);
+                var success = await _mediator.Send(new CreateHostCommand(host.HostName, host.Domain, host.Location, host.Summary));
 
                 if (success) {
                     return RedirectToAction(nameof(Index));
