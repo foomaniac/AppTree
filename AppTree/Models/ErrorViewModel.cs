@@ -1,5 +1,3 @@
-using System;
-
 namespace AppTree.Models
 {
     public class ErrorViewModel

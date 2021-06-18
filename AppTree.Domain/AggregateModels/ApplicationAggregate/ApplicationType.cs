@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace AppTree.Domain.AggregateModels.ApplicationAggregate
+﻿namespace AppTree.Domain.AggregateModels.ApplicationAggregate
 {
     public class ApplicationType
     {

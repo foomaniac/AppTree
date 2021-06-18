@@ -1,0 +1,42 @@
+﻿@model AppTree.Domain.AggregateModels.HostAggregate.Host
+@{
+    ViewData["Title"] = "Details";
+}
+
+
+<h2>@Html.DisplayFor(model => model.HostName)</h2>
+<div>
+    <hr />
+    <form asp-action="Edit">
+        <div class="">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group col-md-4">
+                <label asp-for="HostName" class="control-label"></label>
+                <input asp-for="HostName" class="form-control" />
+                <span asp-validation-for="HostName" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-4">
+                <label asp-for="Domain" class="control-label"></label>
+                <input asp-for="Domain" class="form-control" />
+                <span asp-validation-for="Domain" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-4">
+                <label title="Location" class="control-label">Location</label>
+                <select id="location" name="location" class="form-control" asp-for="Location">
+                    <option value="Azure">Azure</option>
+                    <option value="OnPrem">OnPrem</option>
+                </select>
+            </div>
+            <div class="form-group col-md-8">
+                <label asp-for="Summary" class="control-label"></label>
+                <input asp-for="Summary" class="form-control" />
+                <span asp-validation-for="Summary" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-4">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </div>
+    </form>
+
+</div>

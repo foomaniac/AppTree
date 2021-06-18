@@ -64,8 +64,9 @@ namespace AppTree.Infrastructure.Migrations
                     b.Property<string>("EnvironmentName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Host")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("HostId")
+                        .HasColumnName("HostId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Url")
                         .HasColumnType("nvarchar(max)");
@@ -73,6 +74,8 @@ namespace AppTree.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ApplicationId");
+
+                    b.HasIndex("HostId");
 
                     b.ToTable("ApplicationEnvironment","dbo");
                 });
@@ -117,9 +120,75 @@ namespace AppTree.Infrastructure.Migrations
 
                     b.HasKey("ParentApplicationId", "ApplicationId");
 
-                    b.HasIndex("ApplicationId");
-
                     b.ToTable("Dependency","dbo");
+                });
+
+            modelBuilder.Entity("AppTree.Domain.AggregateModels.HostAggregate.Host", b =>
+                {
+                    b.Property<int?>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("Id")
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Domain")
+                        .HasColumnName("Domain")
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("HostName")
+                        .IsRequired()
+                        .HasColumnName("HostName")
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("Location")
+                        .IsRequired()
+                        .HasColumnName("Location")
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Summary")
+                        .HasColumnName("Summary")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Host","dbo");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Domain = "agepartnership.com",
+                            HostName = "PRAPI02",
+                            Location = "OnPrem"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Domain = "agepartnership.com",
+                            HostName = "PRAPI11",
+                            Location = "OnPrem"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Domain = "agepartnership.com",
+                            HostName = "PRAPI21",
+                            Location = "OnPrem"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Domain = "agepartnership.com",
+                            HostName = "PRAPI04",
+                            Location = "Azure"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Domain = "agepartnership.com",
+                            HostName = "PRAPI05",
+                            Location = "Azure"
+                        });
                 });
 
             modelBuilder.Entity("AppTree.Domain.AggregateModels.ApplicationAggregate.Application", b =>
@@ -138,16 +207,16 @@ namespace AppTree.Infrastructure.Migrations
                         .HasForeignKey("ApplicationId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.HasOne("AppTree.Domain.AggregateModels.HostAggregate.Host", "Host")
+                        .WithMany("Applications")
+                        .HasForeignKey("HostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("AppTree.Domain.AggregateModels.ApplicationAggregate.Dependency", b =>
                 {
-                    b.HasOne("AppTree.Domain.AggregateModels.ApplicationAggregate.Application", "Application")
-                        .WithMany()
-                        .HasForeignKey("ApplicationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("AppTree.Domain.AggregateModels.ApplicationAggregate.Application", "ParentApplication")
                         .WithMany("Dependencies")
                         .HasForeignKey("ParentApplicationId")

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace AppTree.Domain.AggregateModels.ApplicationAggregate
 {
@@ -11,9 +9,9 @@ namespace AppTree.Domain.AggregateModels.ApplicationAggregate
         public string Summary { get; private set; }
         public string Repository { get; private set; }
         public int ApplicationTypeId { get; private set; }
-        public virtual ApplicationType ApplicationType { get; }
-        public virtual ICollection<Dependency> Dependencies { get; }
-        public virtual ICollection<ApplicationEnvironment> Environments { get; }
+        public ApplicationType ApplicationType { get; }
+        public ICollection<Dependency> Dependencies { get; }
+        public ICollection<ApplicationEnvironment> Environments { get; }
 
         public Application()
         {

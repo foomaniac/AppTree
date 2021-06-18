@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using AppTree.Application.Commands;
 using AppTree.Application.Queries;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using AppTree.Domain.AggregateModels.ApplicationAggregate;
-using AppTree.Infrastructure;
 using AppTree.Models;
 using MediatR;
 
@@ -15,12 +10,10 @@ namespace AppTree.Controllers
 {
     public class ApplicationsController : Controller
     {
-        private readonly AppTreeContext _context;
         private readonly IMediator _mediator;
 
-        public ApplicationsController(IMediator mediator, AppTreeContext context)
+        public ApplicationsController(IMediator mediator)
         {
-            _context = context;
             _mediator = mediator;
         }
 
@@ -39,7 +32,10 @@ namespace AppTree.Controllers
                 return NotFound();
             }
 
-            ViewData["ApplicationId"] = new SelectList(_context.Applications, "Id", "Name");
+            var applications = await _mediator.Send(new GetAllApplicationsQuery());
+            var applicationHosts = await _mediator.Send(new GetAllApplicationHostsQuery());
+            ViewData["Applications"] = new SelectList(applications, "Id", "Name");
+            ViewData["Hosts"] = new SelectList(applicationHosts, "Id", "HostName");
 
             return View(application);
         }
@@ -64,12 +60,14 @@ namespace AppTree.Controllers
         {
             if (ModelState.IsValid)
             {
-                var newApplication = new Domain.AggregateModels.ApplicationAggregate.Application(application.Name,
-                    application.Summary, application.Repository, application.ApplicationTypeId);
+                var newApplicationCommand = new CreateApplicationCommand(application.Name, application.Summary,
+                    application.Repository, application.ApplicationTypeId);
 
-                _context.Add(newApplication);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+               var success = await _mediator.Send(newApplicationCommand);
+               if (success)
+               {
+                   return RedirectToAction(nameof(Index));
+               }
             }
 
             return View(application);
@@ -106,59 +104,16 @@ namespace AppTree.Controllers
 
             if (ModelState.IsValid)
             {
-                var application = await _mediator.Send(new GetApplicationQuery() { ApplicationId = id });
-                application.UpdateApplication(applicationModel.Name, applicationModel.Summary, applicationModel.Repository, applicationModel.ApplicationTypeId);
+                var success = await _mediator.Send(new UpdateApplicationCommand(id, applicationModel.Name,
+                    applicationModel.Summary, applicationModel.Repository, applicationModel.ApplicationTypeId));
 
-                try
+                if (success)
                 {
-                    _context.Update(application);
-                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ApplicationExists(id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-
-                return RedirectToAction(nameof(Index));
             }
 
             return View(applicationModel);
-        }
-
-        // GET: Applications/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var application = await _context.Applications
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (application == null)
-            {
-                return NotFound();
-            }
-
-            return View(application);
-        }
-
-        // POST: Applications/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int? id)
-        {
-            var application = await _context.Applications.FindAsync(id);
-            _context.Applications.Remove(application);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
         }
 
         // POST: Dependencies/Create
@@ -171,34 +126,26 @@ namespace AppTree.Controllers
         {
             if (ModelState.IsValid)
             {
-                var dependency = new Dependency()
-                    {ApplicationId = ApplicationId, ParentApplicationId = ParentApplicationId};
-                _context.Add(dependency);
-                await _context.SaveChangesAsync();
+                var success =
+                   await _mediator.Send(new CreateApplicationDependencyCommand(ParentApplicationId, ApplicationId));
+
                 return RedirectToAction(nameof(Details), new {id = ParentApplicationId});
             }
 
             return RedirectToAction(nameof(Details), new { id = ParentApplicationId });
         }
-
-        private bool ApplicationExists(int? id)
-        {
-            return _context.Applications.Any(e => e.Id == id);
-        }
+        
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddEnvironment([FromForm] int ApplicationId, [FromForm] string EnvironmentName,
-            [FromForm] string Host, [FromForm] string Url)
+            [FromForm] int HostId, [FromForm] string Url)
         {
-            var appEnvironment = new ApplicationEnvironment()
-                {ApplicationId = ApplicationId, EnvironmentName = EnvironmentName, Host = Host, Url = Url};
+            var success =
+                await _mediator.Send(
+                    new CreateApplicationEnvironmentCommand(EnvironmentName, HostId, Url, ApplicationId));
 
-            await _context.ApplicationEnvironments.AddAsync(appEnvironment);
-
-            await _context.SaveChangesAsync();
-
-            return RedirectToAction(nameof(Details), new {id = ApplicationId});
+            return RedirectToAction(nameof(Details), new { id = ApplicationId });
         }
     }
 }

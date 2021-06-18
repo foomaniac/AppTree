@@ -1,11 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using AppTree.Domain.AggregateModels.ApplicationAggregate;
 using AppTree.Infrastructure.Repositories;
+using AppTree.Domain.AggregateModels.HostAggregate;
 
 namespace AppTree.Infrastructure
 {
@@ -27,7 +25,11 @@ namespace AppTree.Infrastructure
             });
 
             @this.AddScoped<IApplicationRepository, ApplicationRepository>();
-            
+
+            @this.AddScoped<IApplicationDependencyRepository, ApplicationDependencyRepository>();
+            @this.AddScoped<IApplicationEnvironmentRepository, ApplicationEnvironmentRepository>();
+            @this.AddScoped<IHostRepository,HostRepository>();
+
             return @this;
         }
     }

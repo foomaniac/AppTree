@@ -1,9 +1,9 @@
 ﻿using AppTree.Domain.AggregateModels.ApplicationAggregate;
 using AppTree.Domain.Seedwork;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
+using AppTree.Domain.AggregateModels.HostAggregate;
 
 namespace AppTree.Infrastructure
 {
@@ -17,6 +17,8 @@ namespace AppTree.Infrastructure
         public DbSet<ApplicationType> ApplicationTypes { get; set; }
         
         public DbSet<ApplicationEnvironment> ApplicationEnvironments { get; set; }
+        
+        public DbSet<Host> Hosts { get; set; }
 
         public AppTreeContext(DbContextOptions<AppTreeContext> options) : base(options)
         {
