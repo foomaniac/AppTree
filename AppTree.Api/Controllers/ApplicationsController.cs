@@ -1,6 +1,8 @@
 ﻿using AppTree.Api.Application.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -8,13 +10,22 @@ namespace AppTree.Api.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    public class ApplicationController : ControllerBase
+    public class ApplicationsController : ControllerBase
     {
         private readonly IMediator _mediator;
 
-        public ApplicationController(IMediator mediator)
+        public ApplicationsController(IMediator mediator)
         {
             _mediator = mediator;
+        }
+
+        [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<Domain.AggregateModels.ApplicationAggregate.Application>), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult<IEnumerable<Domain.AggregateModels.ApplicationAggregate.Application>>> ApplicationsAsync()
+        {      
+            var result = await _mediator.Send(new GetAllApplicationsQuery());
+
+            return Ok(result);
         }
 
         [HttpGet]
