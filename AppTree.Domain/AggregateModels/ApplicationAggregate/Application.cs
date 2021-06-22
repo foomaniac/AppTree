@@ -10,8 +10,8 @@ namespace AppTree.Domain.AggregateModels.ApplicationAggregate
         public string Repository { get; private set; }
         public int ApplicationTypeId { get; private set; }
         public ApplicationType ApplicationType { get; }
-        public ICollection<Dependency> Dependencies { get; }
-        public ICollection<ApplicationEnvironment> Environments { get; }
+        public IReadOnlyCollection<Dependency> Dependencies { get; }
+        public IReadOnlyCollection<ApplicationEnvironment> Environments { get; }
 
         public Application()
         {

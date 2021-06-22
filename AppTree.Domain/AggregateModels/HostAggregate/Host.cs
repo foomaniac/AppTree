@@ -17,7 +17,7 @@ namespace AppTree.Domain.AggregateModels.HostAggregate
         public string Location { get; private set; }
         public string Summary { get; private set; }
 
-        public ICollection<ApplicationEnvironment> Applications { get; }
+        public IReadOnlyCollection<ApplicationEnvironment> Applications { get; }
 
         public Host(string hostName, string domain, string location, string summary)
         {

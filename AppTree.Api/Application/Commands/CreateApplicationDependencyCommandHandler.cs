@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using AppTree.Domain.AggregateModels.ApplicationAggregate;
 using MediatR;
 
-namespace AppTree.Application.Commands
+namespace AppTree.Api.Application.Commands
 {
     public class CreateApplicationDependencyCommandHandler : IRequestHandler<CreateApplicationDependencyCommand, bool>
     {
