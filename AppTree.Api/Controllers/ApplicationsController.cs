@@ -32,14 +32,14 @@ namespace AppTree.Api.Controllers
         [Route("{applicationId}")]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(Domain.AggregateModels.ApplicationAggregate.Application), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult<Domain.AggregateModels.ApplicationAggregate.Application>> ApplicationsAsync([FromRoute]int applicationId)
+        public async Task<ActionResult<Domain.AggregateModels.ApplicationAggregate.Application>> ApplicationAsync([FromRoute]int applicationId)
         {
             if(applicationId == default)
             {
                 return BadRequest("Need valid application id");
             }
 
-            var result = await _mediator.Send(new GetApplicationQuery() { ApplicationId = applicationId });
+            var result = await _mediator.Send(new GetApplicationQuery(applicationId));
 
             if (result == null)
             {
