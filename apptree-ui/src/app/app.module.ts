@@ -6,18 +6,24 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { ApplicationsListComponent } from './applications-list/applications-list.component';
 import { DataViewModule } from 'primeng/dataview';
+import { NavMenuComponent } from './nav-menu/nav-menu.component';
+import { MenuModule } from 'primeng/menu';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ApplicationsListComponent
+    ApplicationsListComponent,
+    NavMenuComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    DataViewModule
+    DataViewModule,
+    MenuModule
   ],
   providers: [],
   bootstrap: [AppComponent]

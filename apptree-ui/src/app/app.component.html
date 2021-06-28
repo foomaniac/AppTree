@@ -4,7 +4,9 @@
 </div>
 
 <div id="main-body" class="p-d-flex" role="main">
-  <div id="nav-column" class="p-md-2 p-p-4" [ngStyle]="{backgroundColor:'var(--bluegray-900)', color:'var(--text-color)'}">Item 1</div>
+  <div id="nav-column" class="p-md-2 p-p-4" [ngStyle]="{backgroundColor:'var(--bluegray-900)', color:'var(--text-color)'}">
+    <app-nav-menu></app-nav-menu>
+  </div>
   <div id="main-content" class="p-p-4">
     <router-outlet></router-outlet>
   </div>
