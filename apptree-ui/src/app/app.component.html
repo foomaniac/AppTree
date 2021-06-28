@@ -1,14 +1,17 @@
 
-<div class="p-d-flex p-p-2 layout-header" [ngStyle]="{backgroundColor:'var(--primary-color)'}" role="banner">
-  Hello
+<div class="p-d-flex p-p-2" [ngStyle]="{backgroundColor:'var(--primary-color)'}" role="banner">
+  <h3>AppTree</h3>
 </div>
 
-<div class="content" role="main">
-  <router-outlet></router-outlet>
-
-  <!-- Footer -->
-  <footer>
-    
-  </footer>
-
+<div id="main-body" class="p-d-flex" role="main">
+  <div id="left-column" class="p-md-2 p-p-2" [ngStyle]="{backgroundColor:'var(--bluegray-900)', color:'var(--text-color)'}">Item 1</div>
+  <div class="">
+  <ul *ngFor="let app of applications">
+    <li>
+      {{ app.name }}
+    </li>
+  </ul>
+    <router-outlet></router-outlet>
+  </div>
 </div>
+

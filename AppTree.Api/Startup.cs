@@ -20,6 +20,7 @@ namespace AppTree.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCorsConfig(Configuration);
             services.AddDatabase(Configuration);
             services.AddMediatR(typeof(Startup));
             services.AddControllers().AddNewtonsoftJson(options =>
@@ -39,6 +40,8 @@ namespace AppTree.Api
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors("SiteCorsPolicy");
 
             app.UseAuthorization();
 
