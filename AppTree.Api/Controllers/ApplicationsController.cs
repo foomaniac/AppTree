@@ -1,8 +1,10 @@
 ﻿using AppTree.Api.Application.Queries;
+using AppTree.Api.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -20,33 +22,49 @@ namespace AppTree.Api.Controllers
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<Domain.AggregateModels.ApplicationAggregate.Application>), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult<IEnumerable<Domain.AggregateModels.ApplicationAggregate.Application>>> ApplicationsAsync()
+        [ProducesResponseType(typeof(IEnumerable<ApplicationData>), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult<IEnumerable<ApplicationData>>> ApplicationsAsync()
         {      
             var result = await _mediator.Send(new GetAllApplicationsQuery());
 
-            return Ok(result);
+            var mappedResults = result.Select(app => new ApplicationData()
+            {
+                Id = app.Id.Value,
+                Name = app.Name,
+                Repository = app.Repository,
+                Summary = app.Summary,
+                Type = app.ApplicationType?.Type
+            });
+
+            return Ok(mappedResults);
         }
 
         [HttpGet]
-        [Route("{applicationId}")]
+        [Route("{id}")]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType(typeof(Domain.AggregateModels.ApplicationAggregate.Application), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult<Domain.AggregateModels.ApplicationAggregate.Application>> ApplicationAsync([FromRoute]int applicationId)
+        [ProducesResponseType(typeof(ApplicationData), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult<ApplicationData>> ApplicationAsync([FromRoute]int id)
         {
-            if(applicationId == default)
+            if(id == default)
             {
                 return BadRequest("Need valid application id");
             }
 
-            var result = await _mediator.Send(new GetApplicationQuery(applicationId));
+            var result = await _mediator.Send(new GetApplicationQuery(id));
 
             if (result == null)
             {
-                return BadRequest($"No application found for id {applicationId}");
+                return BadRequest($"No application found for id {id}");
             }
 
-            return result;
+            return new ApplicationData()
+            {
+                Id = result.Id.Value,
+                Name = result.Name,
+                Repository = result.Repository,
+                Summary = result.Summary,
+                Type = result.ApplicationType?.Type
+            };
         }
 
     }
