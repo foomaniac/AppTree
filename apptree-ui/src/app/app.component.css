@@ -3,3 +3,8 @@
 #main-body{
     min-height: 100%;
 }
+
+#app-name {
+    font-size: 1.3rem;
+}
+

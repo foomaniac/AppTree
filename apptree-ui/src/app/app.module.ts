@@ -9,6 +9,7 @@ import { DataViewModule } from 'primeng/dataview';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { MenuModule } from 'primeng/menu';
 import { HomeComponent } from './home/home.component';
+import {TableModule} from 'primeng/table';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { HomeComponent } from './home/home.component';
     BrowserAnimationsModule,
     HttpClientModule,
     DataViewModule,
-    MenuModule
+    MenuModule,
+    TableModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
