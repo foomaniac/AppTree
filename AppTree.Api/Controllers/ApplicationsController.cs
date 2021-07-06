@@ -22,12 +22,12 @@ namespace AppTree.Api.Controllers
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<ApplicationData>), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult<IEnumerable<ApplicationData>>> ApplicationsAsync()
+        [ProducesResponseType(typeof(IEnumerable<Models.ApplicationModel>), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult<IEnumerable<Models.ApplicationModel>>> ApplicationsAsync()
         {      
             var result = await _mediator.Send(new GetAllApplicationsQuery());
 
-            var mappedResults = result.Select(app => new ApplicationData()
+            var mappedResults = result.Select(app => new Models.ApplicationModel()
             {
                 Id = app.Id.Value,
                 Name = app.Name,
@@ -42,29 +42,22 @@ namespace AppTree.Api.Controllers
         [HttpGet]
         [Route("{id}")]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType(typeof(ApplicationData), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult<ApplicationData>> ApplicationAsync([FromRoute]int id)
+        [ProducesResponseType(typeof(Models.ApplicationModel), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult<Models.ApplicationModel>> ApplicationAsync([FromRoute]int id)
         {
             if(id == default)
             {
                 return BadRequest("Need valid application id");
             }
 
-            var result = await _mediator.Send(new GetApplicationQuery(id));
+            var result = await _mediator.Send(new GetApplicationDetailsQuery(id));
 
             if (result == null)
             {
                 return BadRequest($"No application found for id {id}");
             }
 
-            return new ApplicationData()
-            {
-                Id = result.Id.Value,
-                Name = result.Name,
-                Repository = result.Repository,
-                Summary = result.Summary,
-                Type = result.ApplicationType?.Type
-            };
+            return Ok(result);
         }
 
     }

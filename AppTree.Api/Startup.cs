@@ -22,6 +22,7 @@ namespace AppTree.Api
         {
             services.AddCorsConfig(Configuration);
             services.AddDatabase(Configuration);
+            services.AddSettings(Configuration);
             services.AddMediatR(typeof(Startup));
             services.AddControllers().AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
