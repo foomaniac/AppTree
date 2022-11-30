@@ -38,7 +38,7 @@ namespace AppTree.Controllers
         // POST: HostsController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create([Bind("HostName,Domain,Summary,Location")] CreateHostViewModel hostModel)
         {
             try
             {
@@ -82,27 +82,6 @@ namespace AppTree.Controllers
             }
 
             return View(hostModel);
-        }
-
-        // GET: HostsController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: HostsController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
         }
     }
 }
